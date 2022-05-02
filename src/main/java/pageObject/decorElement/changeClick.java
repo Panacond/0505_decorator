@@ -1,4 +1,4 @@
-package pageFactory.decorElement;
+package pageObject.decorElement;
 
 import org.openqa.selenium.WebElement;
 
@@ -7,8 +7,7 @@ public class changeClick extends AbstractElement{
         super(webElement);
     }
 
-    public void tenClick(){
-        for (int i = 0; i < 10; i++) super.click();
+    public void newClick(){
+        super.click();
     }
-
 }

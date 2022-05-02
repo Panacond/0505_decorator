@@ -1,11 +1,12 @@
 package pageFactory;
 
 import org.apache.log4j.Logger;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.time.Duration;
 import java.util.List;
 
 public class SearchPage extends BasePage {
@@ -29,6 +30,9 @@ public class SearchPage extends BasePage {
     @FindBy(css = "button[class^='buy-button']")
     private List<WebElement> listAddBucket;
 
+    @FindBy(css = "button[class^='buy-button']")
+    private WebElement oneAddBucket;
+
     @FindBy(css = "button[class^='header__button ng-star-inserted header']")
     private WebElement goToBucket;
 
@@ -38,10 +42,6 @@ public class SearchPage extends BasePage {
     final static Logger logger = Logger.getLogger(SearchPage.class);
 
     public SearchPage(WebDriver driver){super(driver);}
-
-    public String getCorrectCss(String brand){
-        return "a[data-id='"+ brand + "']";
-    }
 
     public void searchByTitle(final String keyWord){
         searchTitle.sendKeys(keyWord + Keys.ENTER);
@@ -63,7 +63,8 @@ public class SearchPage extends BasePage {
     }
 
     public void clickPopUp(){
-        waitClickOfElement(10^4,selectPopUp);
+        new WebDriverWait(driver, Duration.ofSeconds(40))
+                .until(ExpectedConditions.elementToBeClickable(selectPopUp));
         selectPopUp.click();
     }
 
@@ -71,11 +72,11 @@ public class SearchPage extends BasePage {
         selectExpensive.click();
     }
 
-    public List<WebElement> getListGoods(){
-        return listGoods;
-    }
-
     public List<WebElement> getListAddToBucket(){
+        new WebDriverWait(driver, Duration.ofSeconds(40)).until(
+                webDriver -> ((JavascriptExecutor) webDriver).executeScript("return document.readyState").equals("complete"));
+        new WebDriverWait(driver, Duration.ofSeconds(30))
+                .until(ExpectedConditions.elementToBeClickable(oneAddBucket));
         return listAddBucket;
     }
 

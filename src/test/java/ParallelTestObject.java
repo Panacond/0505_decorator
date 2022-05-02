@@ -2,9 +2,10 @@ import org.openqa.selenium.WebElement;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
-import pageFactory.BucketPage;
-import pageFactory.SearchPage;
-import pageFactory.StartPage;
+import pageObject.BucketPageObject;
+import pageObject.SearchPageObject;
+import pageObject.StartPageObject;
+import pageObjectTest.BaseTestObject;
 import support.ListTestData;
 import support.PropertiesReader;
 import support.TestData;
@@ -14,7 +15,7 @@ import java.util.List;
 import static support.XmlTestData.ReadXml;
 import static support.XmlTestData.WriteXml;
 
-public class ParallelCaseTest extends BaseTest {
+public class ParallelTestObject extends BaseTestObject {
 
     PropertiesReader properties = new PropertiesReader();
 
@@ -41,7 +42,7 @@ public class ParallelCaseTest extends BaseTest {
 
     @DataProvider()
     public Object[][] getDataRead1() {
-        return selectItems(0,1);
+        return selectItems(0,2);
     }
 
     @Test(dataProvider = "getDataRead1", description = "run successively test")
@@ -51,7 +52,7 @@ public class ParallelCaseTest extends BaseTest {
 
     @DataProvider()
     public Object[][] getDataRead2() {
-        return selectItems(1,2);
+        return selectItems(2,4);
     }
 
     @Test(dataProvider = "getDataRead2", description = "run successively test")
@@ -61,7 +62,7 @@ public class ParallelCaseTest extends BaseTest {
 
     @DataProvider()
     public Object[][] getDataRead3() {
-        return selectItems(2,6);
+        return selectItems(4,5);
     }
 
     @Test(dataProvider = "getDataRead3", description = "run successively test")
@@ -70,25 +71,23 @@ public class ParallelCaseTest extends BaseTest {
     }
 
     private void testFlow(String product, String brand, Integer minPrice) {
-        StartPage startPage = getStartPage();
+        StartPageObject startPage = new StartPageObject(super.driver);
         startPage.searchByKeyword(product);
         TestData testData = new TestData(product, brand, minPrice);
-        SearchPage searchPage = getSearchPage();
+        SearchPageObject searchPage = new SearchPageObject(super.driver);
         searchPage.clickCheckBoxMsi(brand);
         searchPage.clickPopUp();
         searchPage.clickPopUpExpensive();
+        searchPage.waitAllCatalog();
         List<WebElement> listAddToBucket =  searchPage.getListAddToBucket();
-        WebElement element = listAddToBucket.get(0);
-        element.click();
-        searchPage.implicitWait(5);
+        listAddToBucket.get(0).click();
         searchPage.clickGoToBucket();
-        BucketPage bucketPage = getBucketPage();
+        BucketPageObject bucketPage = new BucketPageObject(super.driver);
         Integer price = bucketPage.getStringPrice();
         testData.setRealPrice(price);
         SoftAssert softAssert = new SoftAssert();
-        softAssert.assertTrue(price > testData.getMinPrice(), "Price in page low data price");
+        softAssert.assertTrue(price > testData.getMinPrice(), "Price in page low data price" + price + "<" + testData.getMinPrice());
         softAssert.assertAll();
         WriteXml(testData, properties.getResultListData());
     }
-
 }

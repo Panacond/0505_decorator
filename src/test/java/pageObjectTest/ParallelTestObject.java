@@ -1,10 +1,12 @@
+package pageObjectTest;
+
 import org.openqa.selenium.WebElement;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
-import pageFactory.BucketPage;
-import pageFactory.SearchPage;
-import pageFactory.StartPage;
+import pageObject.BucketPageObject;
+import pageObject.SearchPageObject;
+import pageObject.StartPageObject;
 import support.ListTestData;
 import support.PropertiesReader;
 import support.TestData;
@@ -14,7 +16,7 @@ import java.util.List;
 import static support.XmlTestData.ReadXml;
 import static support.XmlTestData.WriteXml;
 
-public class ParallelCaseTest extends BaseTest {
+public class ParallelTestObject extends BaseTestObject{
 
     PropertiesReader properties = new PropertiesReader();
 
@@ -70,19 +72,19 @@ public class ParallelCaseTest extends BaseTest {
     }
 
     private void testFlow(String product, String brand, Integer minPrice) {
-        StartPage startPage = getStartPage();
+        StartPageObject startPage = new StartPageObject(super.driver);
         startPage.searchByKeyword(product);
         TestData testData = new TestData(product, brand, minPrice);
-        SearchPage searchPage = getSearchPage();
+        SearchPageObject searchPage = new SearchPageObject(super.driver);
         searchPage.clickCheckBoxMsi(brand);
         searchPage.clickPopUp();
         searchPage.clickPopUpExpensive();
+        searchPage.waitAllCatalog();
         List<WebElement> listAddToBucket =  searchPage.getListAddToBucket();
         WebElement element = listAddToBucket.get(0);
         element.click();
-        searchPage.implicitWait(5);
         searchPage.clickGoToBucket();
-        BucketPage bucketPage = getBucketPage();
+        BucketPageObject bucketPage = new BucketPageObject(super.driver);
         Integer price = bucketPage.getStringPrice();
         testData.setRealPrice(price);
         SoftAssert softAssert = new SoftAssert();
@@ -90,5 +92,4 @@ public class ParallelCaseTest extends BaseTest {
         softAssert.assertAll();
         WriteXml(testData, properties.getResultListData());
     }
-
 }

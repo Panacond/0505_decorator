@@ -1,0 +1,43 @@
+package pageObjectTest;
+
+import org.openqa.selenium.WebElement;
+import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
+import pageObject.BucketPageObject;
+import pageObject.SearchPageObject;
+import pageObject.StartPageObject;
+import support.PropertiesReader;
+import support.TestData;
+import support.XmlTestData;
+
+import java.time.Duration;
+import java.util.List;
+
+import static support.XmlTestData.WriteXml;
+
+public class SuccessivelyCaseTestObject extends BaseTestObject{
+    PropertiesReader properties = new PropertiesReader();
+    TestData testData = XmlTestData.ReadXml(properties.getInitialData());
+
+    @Test(description = "run one test from file testData.xml")
+    public void checkExpensiveGoods() {
+        StartPageObject startPage = new StartPageObject(super.driver);
+        startPage.searchByKeyword(testData.getProduct());
+        SearchPageObject searchPage = new SearchPageObject(super.driver);
+        searchPage.clickCheckBoxMsi(testData.getBrand());
+        searchPage.clickPopUp();
+        searchPage.clickPopUpExpensive();
+        searchPage.waitAllCatalog();
+        List<WebElement> listAddToBucket =  searchPage.getListAddToBucket();
+        listAddToBucket.get(0).click();
+        searchPage.implicitWait(5);
+        searchPage.clickGoToBucket();
+        BucketPageObject bucketPage = new BucketPageObject(super.driver);
+        Integer price = bucketPage.getStringPrice();
+        testData.setRealPrice(price);
+        SoftAssert softAssert = new SoftAssert();
+        softAssert.assertTrue(price > testData.getMinPrice(), "Price in page low data price");
+        softAssert.assertAll();
+        WriteXml(testData, properties.getResultData());
+    }
+}

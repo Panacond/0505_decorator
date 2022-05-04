@@ -17,7 +17,6 @@ public class SearchPage extends BasePage {
     @FindBy(css = "a.checkbox-filter__link")
     private List<WebElement> listCheckBoxTitle;
 
-//    @FindBy(css = "select[class]")
     @FindBy(css = "select[class^='select']")
     private WebElement selectPopUp;
 
@@ -43,10 +42,6 @@ public class SearchPage extends BasePage {
 
     public SearchPage(WebDriver driver){super(driver);}
 
-    public void searchByTitle(final String keyWord){
-        searchTitle.sendKeys(keyWord + Keys.ENTER);
-    }
-
     public void clickCheckBoxMsi(String brand){
         for (WebElement i: listCheckBoxTitle) {
             String attributeText =  i.getAttribute("data-id");
@@ -56,10 +51,6 @@ public class SearchPage extends BasePage {
             }
         }
         logger.info("Not search item");
-    }
-
-    public WebElement getSelectPopUp() {
-        return selectPopUp;
     }
 
     public void clickPopUp(){
@@ -80,9 +71,11 @@ public class SearchPage extends BasePage {
         return listAddBucket;
     }
 
-    public WebElement getAllCatalog(){ return allElementCatalog;}
-
     public void clickGoToBucket(){
+        new WebDriverWait(driver, Duration.ofSeconds(40)).until(
+                webDriver -> ((JavascriptExecutor) webDriver).executeScript("return document.readyState").equals("complete"));
+        new WebDriverWait(driver, Duration.ofSeconds(30))
+                .until(ExpectedConditions.elementToBeClickable(goToBucket));
         goToBucket.click();
     }
 }

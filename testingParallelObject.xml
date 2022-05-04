@@ -4,7 +4,7 @@
 
     <test name="Test parallel1">
         <classes>
-            <class name="ParallelTestObject">
+            <class name="pageObjectTest.parallelTestObject">
                 <methods>
                     <include name="checkFlowData1"/>
                 </methods>
@@ -13,7 +13,7 @@
     </test>
     <test name="Test parallel2">
         <classes>
-            <class name="ParallelTestObject">
+            <class name="pageObjectTest.parallelTestObject">
                 <methods>
                     <include name="checkFlowData2"/>
                 </methods>
@@ -22,7 +22,7 @@
     </test>
     <test name="Test parallel3">
         <classes>
-            <class name="ParallelTestObject">
+            <class name="pageObjectTest.parallelTestObject">
                 <methods>
                     <include name="checkFlowData3"/>
                 </methods>

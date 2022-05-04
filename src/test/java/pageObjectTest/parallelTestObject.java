@@ -1,15 +1,15 @@
+package pageObjectTest;
+
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import pageFactory.BucketPage;
-import pageFactory.BusinessLogic;
-import pageFactory.SearchPage;
-import pageFactory.StartPage;
+import pageObject.BusinessLogicObject;
 import support.ListTestData;
 import support.PropertiesReader;
-import support.TestData;
+
 import static support.XmlTestData.ReadXml;
 
-public class ParallelCaseTest extends BaseTest {
+public class parallelTestObject extends BaseTestObject{
+
 
     private static Object[][] selectItems(int start, int finish) {
         PropertiesReader properties = new PropertiesReader();
@@ -18,7 +18,7 @@ public class ParallelCaseTest extends BaseTest {
         return listTestData.getListTestData()
                 .stream()
                 .skip(start).limit(finish-start)
-                 .map(a -> new Object[]{a.getProduct(),a.getBrand(),a.getMinPrice()})
+                .map(a -> new Object[]{a.getProduct(),a.getBrand(),a.getMinPrice()})
                 .toArray(Object[][]::new);
     }
 
@@ -28,7 +28,7 @@ public class ParallelCaseTest extends BaseTest {
     }
 
     @Test(dataProvider = "getDataRead1", description = "run successively test")
-    public void checkFlowData1(String product, String brand, Integer minPrice) throws InterruptedException {
+    public void checkFlowData1(String product, String brand, Integer minPrice) {
         testFlow(product, brand, minPrice);
     }
 
@@ -38,28 +38,25 @@ public class ParallelCaseTest extends BaseTest {
     }
 
     @Test(dataProvider = "getDataRead2", description = "run successively test")
-    public void checkFlowData2(String product, String brand, Integer minPrice) throws InterruptedException {
+    public void checkFlowData2(String product, String brand, Integer minPrice) {
         testFlow(product, brand, minPrice);
     }
 
     @DataProvider()
     public Object[][] getDataRead3() {
-        return selectItems(2,5);
+        return selectItems(2,6);
     }
 
     @Test(dataProvider = "getDataRead3", description = "run successively test")
-    public void checkFlowData3(String product, String brand, Integer minPrice) throws InterruptedException {
+    public void checkFlowData3(String product, String brand, Integer minPrice)  {
         testFlow(product, brand, minPrice);
     }
 
-    private void testFlow(String product, String brand, Integer minPrice) throws InterruptedException {
-        StartPage startPage = getStartPage();
-        startPage.searchByKeyword(product);
-        TestData testData = new TestData(product, brand, minPrice);
-        SearchPage searchPage = getSearchPage();
-        new BusinessLogic().addToBucketExpensiveElement(searchPage, brand);
-        BucketPage bucketPage = getBucketPage();
-        new BusinessLogic().CheckProduct(bucketPage, testData);
+    private void testFlow(String product, String brand, Integer minPrice) {
+        new BusinessLogicObject()
+                .oneTestSearchProduct(super.driver, product);
+        new BusinessLogicObject()
+                .addExpensiveProductToBucket(super.driver, brand);
+        new BusinessLogicObject().checkDataPrice(super.driver, minPrice);
     }
-
 }

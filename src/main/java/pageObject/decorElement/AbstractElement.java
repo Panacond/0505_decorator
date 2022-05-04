@@ -11,9 +11,13 @@ public class AbstractElement implements WebElement {
         this.webElement = webElement;
     }
 
+    public AbstractElement() {
+
+    }
+
     @Override
     public void click() {
-
+        webElement.click();
     }
 
     @Override

@@ -5,6 +5,7 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import pageFactory.SearchPage;
+import pageObject.decorElement.ChangeClick;
 
 import java.time.Duration;
 import java.util.List;
@@ -20,8 +21,6 @@ public class SearchPageObject extends BasePageOblect {
 
     final private String SELECT_EXPENSIVE = "option[value='2: expensive']";
 
-    final private String LIST_GOODS = "div[class^='goods-tile ng-star']";
-
     final private String LIST_ADD_BUCKET = "button[class^='buy-button']";
 
     final private String GO_TO_BUCKET = "button[class^='header__button ng-star-inserted header']";
@@ -31,8 +30,6 @@ public class SearchPageObject extends BasePageOblect {
     final static Logger logger = Logger.getLogger(SearchPage.class);
 
     public SearchPageObject(WebDriver driver){super(driver);}
-
-
 
     public void searchByTitle(final String keyWord){
         driver.findElement(By.cssSelector(SEARCH_TITLE)).sendKeys(keyWord + Keys.ENTER);
@@ -66,16 +63,22 @@ public class SearchPageObject extends BasePageOblect {
         driver.findElement(By.cssSelector(SELECT_EXPENSIVE)).click();
     }
 
-    public List<WebElement> getListGoods(){
-        return driver.findElements(By.cssSelector(LIST_GOODS));
-    }
-
     public List<WebElement> getListAddToBucket(){
         new WebDriverWait(driver, Duration.ofSeconds(40)).until(
                 webDriver -> ((JavascriptExecutor) webDriver).executeScript("return document.readyState").equals("complete"));
         new WebDriverWait(driver, Duration.ofSeconds(30))
                 .until(ExpectedConditions.elementToBeClickable(By.cssSelector(LIST_ADD_BUCKET)));
         return driver.findElements(By.cssSelector(LIST_ADD_BUCKET));
+    }
+
+    public List<ChangeClick> getNewListAddToBucket(){
+        new WebDriverWait(driver, Duration.ofSeconds(40)).until(
+                webDriver -> ((JavascriptExecutor) webDriver).executeScript("return document.readyState").equals("complete"));
+        new WebDriverWait(driver, Duration.ofSeconds(30))
+                .until(ExpectedConditions.elementToBeClickable(By.cssSelector(LIST_ADD_BUCKET)));
+        List<WebElement> a = driver.findElements(By.cssSelector(LIST_ADD_BUCKET));
+        ChangeClick b = new ChangeClick();
+        return null;
     }
 
     public void waitAllCatalog(){

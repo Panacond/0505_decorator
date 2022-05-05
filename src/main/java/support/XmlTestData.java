@@ -14,6 +14,7 @@ public class XmlTestData<T> {
     static PropertiesReader properties = new PropertiesReader();
     public static final String path = properties.getInitialListData();
     public static final String pathList = properties.getInitialListData();
+
     public static <T> void WriteXml(T data, String path) {
         try (XMLEncoder xmlEncoder = new XMLEncoder(new BufferedOutputStream(
                 new FileOutputStream(path)))) {

@@ -8,10 +8,10 @@
    <int>5000</int>
   </void>
   <void property="product">
-   <string>Ноутбук</string>
+   <string>ноутбук</string>
   </void>
   <void property="realPrice">
-   <int>219335</int>
+   <int>120600</int>
   </void>
  </object>
 </java>

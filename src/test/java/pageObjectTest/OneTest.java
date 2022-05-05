@@ -6,7 +6,7 @@ import org.testng.asserts.SoftAssert;
 import pageObject.BucketPageObject;
 import pageObject.SearchPageObject;
 import pageObject.StartPageObject;
-import pageObject.decorElement.ChangeClick;
+
 import support.PropertiesReader;
 import support.TestData;
 import support.XmlTestData;
@@ -26,8 +26,8 @@ public class OneTest extends BaseTestObject {
         searchPage.clickPopUp();
         searchPage.clickPopUpExpensive();
         searchPage.waitAllCatalog();
-        List<ChangeClick> listAddToBucket = searchPage.getNewListAddToBucket();
-        listAddToBucket.get(0).newClick();
+        List<WebElement> listAddToBucket = searchPage.getListAddToBucket();
+        listAddToBucket.get(0).click();
         searchPage.implicitWait(5);
         searchPage.clickGoToBucket();
         BucketPageObject bucketPage = new BucketPageObject(super.driver);

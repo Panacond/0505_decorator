@@ -1,4 +1,5 @@
 import org.testng.annotations.DataProvider;
+import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import pageFactory.BucketPage;
 import pageFactory.BusinessLogic;
@@ -24,7 +25,7 @@ public class ParallelCaseTest extends BaseTest {
 
     @DataProvider()
     public Object[][] getDataRead1() {
-        return selectItems(0,1);
+        return selectItems(0,2);
     }
 
     @Test(dataProvider = "getDataRead1", description = "run successively test")
@@ -34,7 +35,7 @@ public class ParallelCaseTest extends BaseTest {
 
     @DataProvider()
     public Object[][] getDataRead2() {
-        return selectItems(1,2);
+        return selectItems(2,4);
     }
 
     @Test(dataProvider = "getDataRead2", description = "run successively test")
@@ -44,9 +45,10 @@ public class ParallelCaseTest extends BaseTest {
 
     @DataProvider()
     public Object[][] getDataRead3() {
-        return selectItems(2,5);
+        return selectItems(4,5);
     }
 
+    @Parameters({ "product", "brand", "minPrise" })
     @Test(dataProvider = "getDataRead3", description = "run successively test")
     public void checkFlowData3(String product, String brand, Integer minPrice) throws InterruptedException {
         testFlow(product, brand, minPrice);

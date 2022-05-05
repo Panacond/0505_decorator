@@ -5,7 +5,7 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import pageFactory.SearchPage;
-import pageObject.decorElement.ChangeClick;
+
 
 import java.time.Duration;
 import java.util.List;
@@ -71,15 +71,6 @@ public class SearchPageObject extends BasePageOblect {
         return driver.findElements(By.cssSelector(LIST_ADD_BUCKET));
     }
 
-    public List<ChangeClick> getNewListAddToBucket(){
-        new WebDriverWait(driver, Duration.ofSeconds(40)).until(
-                webDriver -> ((JavascriptExecutor) webDriver).executeScript("return document.readyState").equals("complete"));
-        new WebDriverWait(driver, Duration.ofSeconds(30))
-                .until(ExpectedConditions.elementToBeClickable(By.cssSelector(LIST_ADD_BUCKET)));
-        List<WebElement> a = driver.findElements(By.cssSelector(LIST_ADD_BUCKET));
-        ChangeClick b = new ChangeClick();
-        return null;
-    }
 
     public void waitAllCatalog(){
         new WebDriverWait(driver, Duration.ofSeconds(30))

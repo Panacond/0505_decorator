@@ -1,0 +1,13 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
+
+<suite name="parallel suite" data-provider-thread-count="3">
+    <test name="Test multi parallel">
+        <classes>
+            <class name="ParallelTest">
+                <methods>
+                    <include name="testFlow"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+</suite>

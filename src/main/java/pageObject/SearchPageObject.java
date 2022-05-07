@@ -4,8 +4,8 @@ import org.apache.log4j.Logger;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import pageFactory.Decorator.RewriteWebElement;
 import pageFactory.SearchPage;
-
 
 import java.time.Duration;
 import java.util.List;
@@ -53,7 +53,9 @@ public class SearchPageObject extends BasePageOblect {
     public void clickPopUp(){
         WebElement selectPopUp = new WebDriverWait(driver, Duration.ofSeconds(40))
                 .until(ExpectedConditions.elementToBeClickable(By.cssSelector(SELECT_POP_UP)));
-        selectPopUp.click();
+        new RewriteWebElement(selectPopUp).loggerClick();
+
+//        selectPopUp.click();
     }
 
 

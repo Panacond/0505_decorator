@@ -31,7 +31,6 @@ public class FirstCaseTest extends BaseTest {
     public void checkExpensiveGood() {
         String[] data = {"Ноутбук", "MSI" };
         int priceAssert = 5000;
-//        testInputData(data, priceAssert);
         testFlow(data[0], data[1], priceAssert);
     }
 

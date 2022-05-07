@@ -25,7 +25,6 @@ public class BucketPage extends BasePage{
                     webDriver -> ((JavascriptExecutor) webDriver).executeScript("return document.readyState").equals("complete"));
             new WebDriverWait(driver, Duration.ofSeconds(30))
                     .until(ExpectedConditions.elementToBeClickable(getPrice));
-//            waitVisibilityOfElement(5, getPrice);
             return Integer.parseInt(getPrice.getText());
         } catch (NumberFormatException ex) {
             ex.printStackTrace();

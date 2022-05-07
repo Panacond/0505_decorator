@@ -5,6 +5,7 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import pageObject.decorElement.RewriteWebElementFactory;
 
 import java.time.Duration;
 import java.util.List;
@@ -56,7 +57,7 @@ public class SearchPage extends BasePage {
     public void clickPopUp(){
         new WebDriverWait(driver, Duration.ofSeconds(40))
                 .until(ExpectedConditions.elementToBeClickable(selectPopUp));
-        selectPopUp.click();
+        new RewriteWebElementFactory(selectPopUp).loggerClick();
     }
 
     public void clickPopUpExpensive(){
